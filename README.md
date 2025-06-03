@@ -7,93 +7,105 @@
 
 ## The Problem
 
-<img src="https://github.com/user-attachments/assets/357956b2-83f3-4d5b-9b80-3999e38d56d0" alt="Hand pump diagram" height="" />
+![image](https://github.com/user-attachments/assets/e6b75bc7-af2e-418b-9e32-4dea963a9343)
 
 
-## 📌 Overview
+Access to clean and functional water sources remains a major challenge in Tanzania, especially in rural and underserved regions. Although thousands of water wells have been installed across the country, a significant number are either non-functional or in need of repair. The lack of timely maintenance, poor infrastructure planning, and limited resource allocation contribute to this issue, leaving many communities without reliable access to safe water. Currently, there is no efficient, data-driven system in place to proactively identify which water wells are likely to fail or require repairs. This results in reactive maintenance, inefficient use of government or NGO resources, and prolonged water shortages for affected populations.
 
-This project uses machine learning to predict the condition of water wells in Tanzania, classifying them as:
+**The core problem is the absence of a predictive system that can classify the operational status of water wells (functional, functional but needs repair, or non-functional)** based on available well-related features. Without such a system, stakeholders cannot easily prioritize interventions, optimize maintenance schedules, or learn from patterns of failure to improve future water point installations.
 
-- **Functional**
-- **Functional but needs repair**
-- **Non functional**
 
-Clean water access is a significant challenge in Tanzania. By analyzing well attributes such as pump type, water source, construction year, and management methods, this project supports better maintenance planning and resource allocation. The goal is to assist NGOs and the Tanzanian government in proactively identifying failing infrastructure and improving future water point installations.
+## Business Understanding
 
----
+Tanzania struggles with providing reliable access to clean water, especially in rural areas. Many existing water wells are non-functional or in need of repair, impacting millions. This project aims to build a machine learning model that predicts the condition of water wells based on features like pump type, construction year, and location. The model will support NGOs, government agencies, and donors in identifying at-risk wells and prioritizing repairs, ultimately improving water access and resource allocation.
 
-## 📊 Business and Data Understanding
+![image](https://github.com/user-attachments/assets/08ab02ee-12c9-4f16-83ff-e1d0644593a0)
 
-### 🔍 Business Context
+In this project, the goal is to develop a machine learning-based classification model that can predict the current condition of a water well (functional, functional but needs repair, or non-functional) using historical and descriptive data such as the type of pump, construction year, water source, and geographic features. Such a model can support early identification of at-risk wells and optimize the deployment of limited maintenance and rehabilitation resources.
 
-Tanzania has over 59 million people, many of whom rely on public water points for access to clean water. However, thousands of these water points are either broken or in poor condition. Field inspections are expensive and time-consuming. A predictive model can help prioritize which wells need attention.
+The **key stakeholders** of this project is a **Non-Governmental Organizations (NGOs)** focused on water access and rural development, who need to identify which wells to prioritize for repair.
 
-### 🎯 Stakeholders
 
-- **Government of Tanzania** – for infrastructure planning and monitoring
-- **NGOs and Aid Agencies** – to target interventions efficiently
-- **Local Communities** – who depend on well functionality
-- **Field Technicians** – to focus inspections and repairs
-- **Donors & Development Partners** – to ensure impact of funds
+## Data Understanding
 
-### 📁 Dataset
+The dataset comprises information about over 59,000 water points across Tanzania, collected to assess their operational status. Each record includes both numerical and categorical attributes, such as location coordinates, pump type, water source, construction year, and management details. The target variable, **status_group**, indicates whether a water point is **functional, functional needs repair, or non functional**. A preliminary analysis revealed data quality issues such as missing values, inconsistent labels, and class imbalance—especially underrepresentation of the "functional needs repair" category. Understanding these variables and their relationships is critical to building a model that can help NGOs and government agencies target interventions effectively. Data source Data-driven[https://www.drivendata.org/competitions/7/pump-it-up-data-mining-the-water-table/data/]
 
-The dataset is sourced from Taarifa and DrivenData, covering over 59,000 water access points. It contains features like:
 
-- Pump/extraction type
-- Water source and quality
-- Construction year
-- Geographical information
-- Management and funding entities
+## Data Preparation
 
-The target variable is `status_group`, a three-class label indicating the well’s condition.
+Preparing the dataset for modeling was a critical step, given its diverse structure and real-world complexity. The initial dataset contained a mix of numerical, categorical, and text-based features, some of which were incomplete, inconsistent, or irrelevant to the predictive task. Missing values in numerical features like gps_height and amount_tsh were addressed using median imputation, while categorical features such as scheme_management and installer were imputed using the most frequent category. High-cardinality fields like funder, installer, and scheme_name, which had many unique but rarely repeated values, were grouped or excluded to reduce dimensionality and improve model generalization.
 
----
+![image](https://github.com/user-attachments/assets/80214717-c2bf-40ce-9a57-02eb5333dd18)
 
-## 🤖 Modeling
+To ensure the model could effectively interpret the features, I scaled numerical data using **Min-Max scaling to normalize ranges**, and **encoded categorical variables using one-hot encoding**. This allowed algorithms like **Logistic Regression** and **Random Forest** to treat all inputs consistently. I engineered new features or consolidated for example, the three-level extraction fields (extraction_type, extraction_type_group, extraction_type_class) I reviewed for redundancy. For features that were either leaky, high-noise, or non-informative I dropped for effeciency of the model.
 
-*(To be completed)*
+![image](https://github.com/user-attachments/assets/bda84608-2547-44c3-af4f-875e36cdb729)
 
-This section will include:
-- Feature selection and engineering
-- Model choice (e.g., Random Forest, XGBoost, etc.)
-- Training and validation strategy
-- Handling class imbalance (if necessary)
+I addressed class imbalance  at the modeling stage. Since the target variable status_group is imbalanced, with the **functional needs repair** class underrepresented, class weighting (class_weight='balanced') was applied in model training to ensure fair treatment of all classes. These preparation steps ensured that the dataset was clean, informative, and structured optimally for model training and evaluation.
 
----
+![image](https://github.com/user-attachments/assets/aa84ff72-d0ae-4b21-ab9a-c06feb86540b)
 
-## 📈 Evaluation
 
-*(To be completed)*
 
-This section will include:
-- Accuracy, precision, recall, and F1-score
-- Confusion matrix
-- Insights into misclassifications
-- Feature importance analysis
 
----
+## Modeling
 
-## ✅ Conclusion
+For the modeling phase I began with a simple and interpretable baseline model **Logistic Regression**. As a linear classifier, Logistic Regression provided a fast and transparent starting point to establish a benchmark for performance. To address class imbalance in the target variable (status_group), I configured the model with class_weight='balanced'. Performed Hyperparameter tuning  using GridSearchCV on the regularization parameter C to find an optimal balance between underfitting and overfitting.
 
-*(To be completed)*
+Next, I implemented **Decision Tree Classifier**  to capture non-linear patterns and feature interactions that a linear model might miss. Decision trees offer clear decision rules and interpretability, making them ideal for understanding which features most influence predictions. Hyperparameters such as max_depth, min_samples_split, and min_samples_leaf were tuned to improve generalization and reduce overfitting.
 
-This section will summarize:
-- Final model performance
-- Business value and insights gained
-- Recommendations for stakeholders
-- Limitations and future work
+Finally, a Implemented a **complex ensemble model**, **Random Forest**. The model aggregates predictions from multiple decision trees and generally improves robustness and accuracy. A wide hyperparameter grid was used—tuning values like n_estimators, max_depth, and bootstrap—to extract the best-performing configuration. Across all models, 5-fold cross-validation and F1-weighted scoring were used to ensure fair and consistent evaluation, especially in the presence of class imbalance.
 
----
+
+
+
+## Evaluation
+
+To evaluate the performance of each model, multiple classification metrics were used, considering the multi-class nature of the problem and the class imbalance, especially the minority class "functional needs repair". The main metrics used were accuracy, precision, recall, and F1-score, obtained through classification_report, confusion_matrix, and cross-validation strategies.
+
+Accuracy provided a general idea of the model’s correctness, but since the dataset was imbalanced, F1-score (weighted) became the primary evaluation metric. The weighted F1-score considers the harmonic mean of precision and recall while giving importance to each class according to its frequency. This helped ensure the model didn’t ignore minority classes like "functional needs repair".
+
+The baseline Logistic Regression model achieved moderate performance, with decent precision but struggled with recall for underrepresented classes. The Decision Tree slightly improved interpretability but showed tendencies to overfit. The Random Forest, benefiting from ensemble learning and hyperparameter tuning, outperformed the others in both accuracy and F1-score, indicating better generalization and handling of class imbalance. The evaluation results, particularly confusion matrices, revealed that while all models performed best on predicting "functional" wells, more effort is needed in improving detection of "needs repair" status.
+
+## Hyperparameter Tuning
+
+To enhance model performance, especially in handling the imbalanced classes, hyperparameter tuning was performed using GridSearchCV. This allowed exhaustive search across defined parameter grids with cross-validation (cv=5) and the F1-weighted score as the evaluation metric.
+
+For Logistic Regression, the regularization strength C was tuned to find the optimal balance between bias and variance. For the Decision Tree, parameters such as max_depth, min_samples_split, and min_samples_leaf were varied to reduce overfitting. The Random Forest model required a more extensive grid, tuning n_estimators, max_depth, min_samples_split, min_samples_leaf, and bootstrap. Despite the longer training time, this approach significantly improved performance, especially for underrepresented classes.
+
+After tuning, the Random Forest model emerged as the best-performing model, providing the highest F1-score and improved generalization across all classes, especially the minority "functional needs repair".
+
+## Final Model Selection
+
+After training and tuning all three models — Logistic Regression, Decision Tree, and Random Forest — the Random Forest with optimized hyperparameters was selected as the final model. This decision was based on:
+
+- Highest F1-weighted score
+
+- Better recall on minority class
+
+- Robustness to overfitting
+
+- Ability to model complex patterns in the data
+
+The final model balances predictive power with reasonable interpretability, making it suitable for real-world deployment by NGOs or government bodies for targeting water well maintenance.
+
+## Conclusion
+
+This project successfully demonstrated the use of machine learning to address a critical infrastructure issue in Tanzania — predicting the condition of water wells using historical and operational features.
+
+Starting with data cleaning and preprocessing, through model training and hyperparameter optimization, we built a classification system capable of identifying whether a water point is functional, needs repair, or is non-functional. The best model, a Random Forest, achieved a weighted F1-score of over 0.70, outperforming baseline models in both accuracy and minority class handling.
+
+This solution offers valuable insights to NGOs and government agencies, enabling data-driven decisions on water point maintenance and investments. Future work could include integrating geographic data, temporal monitoring, and real-time updates to improve long-term planning and sustainability.
+
+
 
 ## 📂 Project Structure
 
 ```bash
 project/
 │
-├── data/                   # Raw and processed data
-├── notebooks/              # Jupyter notebooks for EDA and modeling
-├── src/                    # Source code (scripts, utils, etc.)
-├── outputs/                # Model outputs, plots, evaluation metrics
-├── README.md               # Project overview and documentation
-└── requirements.txt        # Python dependencies
+├── data/                   
+├── index/              
+├── .gitignore/                                   
+├── README.md              
+└── requirements.txt        

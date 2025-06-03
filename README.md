@@ -7,7 +7,7 @@
 
 ## The Problem
 
-<img src="C:/Users/ronny somi/Downloads/hand_pump_diagram.png" alt="Hand pump diagram" height="" />
+<img src="https://github.com/user-attachments/assets/357956b2-83f3-4d5b-9b80-3999e38d56d0" alt="Hand pump diagram" height="" />
 
 
 ## 📌 Overview

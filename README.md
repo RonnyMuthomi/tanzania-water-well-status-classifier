@@ -1,4 +1,14 @@
-# 💧 Predicting Water Well Functionality in Tanzania Using Machine Learning
+# Water Wells Functionality Condition
+
+##  Predicting Water Well Functionality in Tanzania Using Machine Learning
+
+### Author: Ronny Muthomi
+
+
+## The Problem
+
+<img src="C:/Users/ronny somi/Downloads/hand_pump_diagram.png" alt="Hand pump diagram" height="" />
+
 
 ## 📌 Overview
 

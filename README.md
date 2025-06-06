@@ -46,6 +46,44 @@ I addressed class imbalance  at the modeling stage. Since the target variable st
 ![image](https://github.com/user-attachments/assets/aa84ff72-d0ae-4b21-ab9a-c06feb86540b)
 
 
+## **Exploratory Data Analysis (EDA)**
+
+The purpose of Exploratory Data Analysis (EDA) is to gain a better understanding of the dataset by visualizing patterns, identifying anomalies, and uncovering relationships between variables. In this project, EDA is tailored to support the key objectives of predicting water well conditions in Tanzania.
+
+### **1. Proactive Identification of At-Risk or Failing Wells**
+
+Understanding which wells are likely to fail helps stakeholders plan interventions before problems arise.
+
+- **Distribution of Well Status**
+  
+  
+ ![image](https://github.com/user-attachments/assets/ecc2b52d-6a9e-4c6e-8dd9-1995c8949e48)
+
+  
+  > Most wells are functional, but a significant portion are non-functional or need repair. This highlights the importance of early intervention.
+
+- **Well Age vs. Status**
+  
+  Older wells are generally more prone to failure.
+  
+  ![image](https://github.com/user-attachments/assets/fbc69037-411b-436e-951d-670cce175cf8)
+
+  
+  > Non-functional wells tend to be older, suggesting maintenance needs increase with well age.
+
+
+### **2. Efficient Allocation of Maintenance Resources**
+
+Targeting areas with higher concentrations of failing wells can help prioritize limited resources.
+
+- **Well Status by Region**
+  
+  ![image](https://github.com/user-attachments/assets/86d5cc82-6872-424a-8f55-ea9390f93ed5)
+
+  > Some regions have a higher share of failing wells, guiding NGOs where to direct maintenance teams.
+
+
+Through this EDA, I identified critical patterns that inform predictive modeling and support decision-making for well maintenance, resource allocation, and sustainable water access.
 
 
 ## Modeling
@@ -56,6 +94,7 @@ Next, I implemented **Decision Tree Classifier**  to capture non-linear patterns
 
 Finally, a Implemented a **complex ensemble model**, **Random Forest**. The model aggregates predictions from multiple decision trees and generally improves robustness and accuracy. A wide hyperparameter grid was used—tuning values like n_estimators, max_depth, and bootstrap—to extract the best-performing configuration. Across all models, 5-fold cross-validation and F1-weighted scoring were used to ensure fair and consistent evaluation, especially in the presence of class imbalance.
 
+![image](https://github.com/user-attachments/assets/e2ebd195-51bc-4aeb-a12f-2a2e59e65ade)
 
 
 
